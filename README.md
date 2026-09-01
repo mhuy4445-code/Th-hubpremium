@@ -13,9 +13,9 @@ ScreenGui.ResetOnSpawn = false
 -- 2. Khung chứa chính (MainFrame)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 420, 0, 400)
-MainFrame.Position = UDim2.new(0.5, -210, 0.5, -200)
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 20, 30)
+MainFrame.Size = UDim2.new(0, 440, 0, 420)
+MainFrame.Position = UDim2.new(0.5, -220, 0.5, -210)
+MainFrame.BackgroundColor3 = Color3.fromRGB(12, 16, 24)
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = true
@@ -23,108 +23,153 @@ MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
 
 local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
--- Thanh tiêu đề (Header Bar)
+-- Viền phát sáng nhẹ tạo điểm nhấn cao cấp
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(35, 70, 110)
+UIStroke.Thickness = 1.5
+UIStroke.Parent = MainFrame
+
+-- Thanh tiêu đề (Header Bar) tích hợp Gradient
 local Header = Instance.new("Frame")
 Header.Name = "Header"
-Header.Size = UDim2.new(1, 0, 0, 45)
-Header.BackgroundColor3 = Color3.fromRGB(20, 40, 65)
+Header.Size = UDim2.new(1, 0, 0, 48)
+Header.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Header.BorderSizePixel = 0
 Header.Parent = MainFrame
 
+local HeaderGradient = Instance.new("UIGradient")
+HeaderGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 45, 80)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 30, 55))
+})
+HeaderGradient.Parent = Header
+
 local HeaderCorner = Instance.new("UICorner")
-HeaderCorner.CornerRadius = UDim.new(0, 10)
+HeaderCorner.CornerRadius = UDim.new(0, 12)
 HeaderCorner.Parent = Header
 
+local HeaderCover = Instance.new("Frame")
+HeaderCover.Size = UDim2.new(1, 0, 0, 10)
+HeaderCover.Position = UDim2.new(0, 0, 1, -10)
+HeaderCover.BackgroundColor3 = Color3.fromRGB(20, 45, 80)
+HeaderCover.BorderSizePixel = 0
+HeaderCover.Parent = Header
+
+-- 🖼️ Ảnh hiển thị khi thu nhỏ thành hình vuông
+local LogoIcon = Instance.new("ImageLabel")
+LogoIcon.Name = "LogoIcon"
+LogoIcon.Size = UDim2.new(0, 32, 0, 32)
+LogoIcon.Position = UDim2.new(0.5, -16, 0.5, -16)
+LogoIcon.BackgroundTransparency = 1
+LogoIcon.Image = "rbxassetid://112185134254493" 
+LogoIcon.Visible = false
+LogoIcon.Parent = Header
+
 local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, -80, 1, 0)
-Title.Position = UDim2.new(0, 15, 0, 0)
+Title.Size = UDim2.new(1, -90, 1, 0)
+Title.Position = UDim2.new(0, 16, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Thọ Hub"
-Title.TextColor3 = Color3.fromRGB(140, 210, 255)
-Title.TextSize = 18
-Title.Font = Enum.Font.SourceSansBold
+Title.Text = "⚡ THỌ HUB - PREMIUM LOADER"
+Title.TextColor3 = Color3.fromRGB(130, 220, 255)
+Title.TextSize = 15
+Title.Font = Enum.Font.GothamBold
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = Header
 
 -- Nút Thu nhỏ (-)
 local MinimizeBtn = Instance.new("TextButton")
-MinimizeBtn.Size = UDim2.new(0, 28, 0, 28)
-MinimizeBtn.Position = UDim2.new(1, -68, 0.5, -14)
+MinimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+MinimizeBtn.Position = UDim2.new(1, -74, 0.5, -15)
 MinimizeBtn.BackgroundColor3 = Color3.fromRGB(30, 60, 95)
 MinimizeBtn.Text = "-"
 MinimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-MinimizeBtn.Font = Enum.Font.SourceSansBold
-MinimizeBtn.TextSize = 20
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.TextSize = 18
 MinimizeBtn.Parent = Header
 
 local MinCorner = Instance.new("UICorner")
-MinCorner.CornerRadius = UDim.new(0, 6)
+MinCorner.CornerRadius = UDim.new(0, 8)
 MinCorner.Parent = MinimizeBtn
 
 -- Nút Đóng (X)
 local CloseBtn = Instance.new("TextButton")
-CloseBtn.Size = UDim2.new(0, 28, 0, 28)
-CloseBtn.Position = UDim2.new(1, -34, 0.5, -14)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(210, 50, 50)
-CloseBtn.Text = "X"
+CloseBtn.Size = UDim2.new(0, 30, 0, 30)
+CloseBtn.Position = UDim2.new(1, -38, 0.5, -15)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
+CloseBtn.Text = "×"
 CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseBtn.Font = Enum.Font.SourceSansBold
-CloseBtn.TextSize = 14
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextSize = 20
 CloseBtn.Parent = Header
 
 local CloseCorner = Instance.new("UICorner")
-CloseCorner.CornerRadius = UDim.new(0, 6)
+CloseCorner.CornerRadius = UDim.new(0, 8)
 CloseCorner.Parent = CloseBtn
 
--- 3. Thanh Chuyển Tab (Tab Bar)
+-- 3. Thanh Chuyển Tab (Tab Bar) - Gồm 3 Tab: Script, Kaitun, Hỗ trợ
 local TabBar = Instance.new("Frame")
 TabBar.Name = "TabBar"
-TabBar.Size = UDim2.new(1, -20, 0, 32)
-TabBar.Position = UDim2.new(0, 10, 0, 50)
+TabBar.Size = UDim2.new(1, -24, 0, 36)
+TabBar.Position = UDim2.new(0, 12, 0, 56)
 TabBar.BackgroundTransparency = 1
 TabBar.Parent = MainFrame
 
 local TabScriptBtn = Instance.new("TextButton")
 TabScriptBtn.Name = "TabScriptBtn"
-TabScriptBtn.Size = UDim2.new(0.5, -4, 1, 0)
-TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 220)
-TabScriptBtn.Text = "Script"
+TabScriptBtn.Size = UDim2.new(0.33, -4, 1, 0)
+TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+TabScriptBtn.Text = "📜 Script"
 TabScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-TabScriptBtn.Font = Enum.Font.SourceSansBold
-TabScriptBtn.TextSize = 14
+TabScriptBtn.Font = Enum.Font.GothamBold
+TabScriptBtn.TextSize = 12
 TabScriptBtn.Parent = TabBar
 
 local Tab1Corner = Instance.new("UICorner")
-Tab1Corner.CornerRadius = UDim.new(0, 6)
+Tab1Corner.CornerRadius = UDim.new(0, 8)
 Tab1Corner.Parent = TabScriptBtn
+
+local TabKaitunBtn = Instance.new("TextButton")
+TabKaitunBtn.Name = "TabKaitunBtn"
+TabKaitunBtn.Size = UDim2.new(0.33, -4, 1, 0)
+TabKaitunBtn.Position = UDim2.new(0.33, 2, 0, 0)
+TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+TabKaitunBtn.Text = "🤖 Kaitun"
+TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+TabKaitunBtn.Font = Enum.Font.GothamBold
+TabKaitunBtn.TextSize = 12
+TabKaitunBtn.Parent = TabBar
+
+local Tab3Corner = Instance.new("UICorner")
+Tab3Corner.CornerRadius = UDim.new(0, 8)
+Tab3Corner.Parent = TabKaitunBtn
 
 local TabSupportBtn = Instance.new("TextButton")
 TabSupportBtn.Name = "TabSupportBtn"
-TabSupportBtn.Size = UDim2.new(0.5, -4, 1, 0)
-TabSupportBtn.Position = UDim2.new(0.5, 4, 0, 0)
-TabSupportBtn.BackgroundColor3 = Color3.fromRGB(25, 35, 50)
-TabSupportBtn.Text = "Hỗ trợ"
-TabSupportBtn.TextColor3 = Color3.fromRGB(180, 200, 220)
-TabSupportBtn.Font = Enum.Font.SourceSansBold
-TabSupportBtn.TextSize = 14
+TabSupportBtn.Size = UDim2.new(0.33, -4, 1, 0)
+TabSupportBtn.Position = UDim2.new(0.66, 4, 0, 0)
+TabSupportBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+TabSupportBtn.Text = "🛠️ Hỗ trợ"
+TabSupportBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+TabSupportBtn.Font = Enum.Font.GothamBold
+TabSupportBtn.TextSize = 12
 TabSupportBtn.Parent = TabBar
 
 local Tab2Corner = Instance.new("UICorner")
-Tab2Corner.CornerRadius = UDim.new(0, 6)
+Tab2Corner.CornerRadius = UDim.new(0, 8)
 Tab2Corner.Parent = TabSupportBtn
 
--- === MỤC 1: TAB SCRIPT ===
+-- === CONTAINER 1: TAB SCRIPT ===
 local ScriptContainer = Instance.new("ScrollingFrame")
 ScriptContainer.Name = "ScriptContainer"
-ScriptContainer.Size = UDim2.new(1, -20, 1, -95)
-ScriptContainer.Position = UDim2.new(0, 10, 0, 90)
+ScriptContainer.Size = UDim2.new(1, -24, 1, -106)
+ScriptContainer.Position = UDim2.new(0, 12, 0, 100)
 ScriptContainer.BackgroundTransparency = 1
 ScriptContainer.BorderSizePixel = 0
-ScriptContainer.ScrollBarThickness = 5
-ScriptContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 120, 215)
+ScriptContainer.ScrollBarThickness = 4
+ScriptContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
 ScriptContainer.Parent = MainFrame
 
 local ScriptListLayout = Instance.new("UIListLayout")
@@ -133,19 +178,40 @@ ScriptListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ScriptListLayout.Padding = UDim.new(0, 8)
 
 ScriptListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    ScriptContainer.CanvasSize = UDim2.new(0, 0, 0, ScriptListLayout.AbsoluteContentSize.Y + 10)
+    ScriptContainer.CanvasSize = UDim2.new(0, 0, 0, ScriptListLayout.AbsoluteContentSize.Y + 12)
 end)
 
--- === MỤC 2: TAB HỖ TRỢ ===
+-- === CONTAINER 2: TAB KAITUN ===
+local KaitunContainer = Instance.new("ScrollingFrame")
+KaitunContainer.Name = "KaitunContainer"
+KaitunContainer.Size = UDim2.new(1, -24, 1, -106)
+KaitunContainer.Position = UDim2.new(0, 12, 0, 100)
+KaitunContainer.BackgroundTransparency = 1
+KaitunContainer.BorderSizePixel = 0
+KaitunContainer.Visible = false
+KaitunContainer.ScrollBarThickness = 4
+KaitunContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
+KaitunContainer.Parent = MainFrame
+
+local KaitunListLayout = Instance.new("UIListLayout")
+KaitunListLayout.Parent = KaitunContainer
+KaitunListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+KaitunListLayout.Padding = UDim.new(0, 8)
+
+KaitunListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    KaitunContainer.CanvasSize = UDim2.new(0, 0, 0, KaitunListLayout.AbsoluteContentSize.Y + 12)
+end)
+
+-- === CONTAINER 3: TAB HỖ TRỢ ===
 local SupportContainer = Instance.new("ScrollingFrame")
 SupportContainer.Name = "SupportContainer"
-SupportContainer.Size = UDim2.new(1, -20, 1, -95)
-SupportContainer.Position = UDim2.new(0, 10, 0, 90)
+SupportContainer.Size = UDim2.new(1, -24, 1, -106)
+SupportContainer.Position = UDim2.new(0, 12, 0, 100)
 SupportContainer.BackgroundTransparency = 1
 SupportContainer.BorderSizePixel = 0
 SupportContainer.Visible = false
-SupportContainer.ScrollBarThickness = 5
-SupportContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 120, 215)
+SupportContainer.ScrollBarThickness = 4
+SupportContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
 SupportContainer.Parent = MainFrame
 
 local SupportListLayout = Instance.new("UIListLayout")
@@ -154,11 +220,110 @@ SupportListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 SupportListLayout.Padding = UDim.new(0, 8)
 
 SupportListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    SupportContainer.CanvasSize = UDim2.new(0, 0, 0, SupportListLayout.AbsoluteContentSize.Y + 10)
+    SupportContainer.CanvasSize = UDim2.new(0, 0, 0, SupportListLayout.AbsoluteContentSize.Y + 12)
 end)
 
--- 4. Danh sách Hubs trong mục Script
+-- 4. Chức năng chuyển Tab
+TabScriptBtn.MouseButton1Click:Connect(function()
+    ScriptContainer.Visible = true
+    KaitunContainer.Visible = false
+    SupportContainer.Visible = false
+    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+    TabScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabSupportBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabSupportBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+end)
+
+TabKaitunBtn.MouseButton1Click:Connect(function()
+    ScriptContainer.Visible = false
+    KaitunContainer.Visible = true
+    SupportContainer.Visible = false
+    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabScriptBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+    TabKaitunBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabSupportBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabSupportBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+end)
+
+TabSupportBtn.MouseButton1Click:Connect(function()
+    ScriptContainer.Visible = false
+    KaitunContainer.Visible = false
+    SupportContainer.Visible = true
+    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabScriptBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabSupportBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+    TabSupportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+end)
+
+-- 5. Xử lý Nút Thu nhỏ (-) và Đóng (X)
+local isMinimized = false
+MinimizeBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        MainFrame.Size = UDim2.new(0, 70, 0, 70)
+        LogoIcon.Visible = true
+        Title.Visible = false
+        TabBar.Visible = false
+        HeaderCover.Visible = false
+        ScriptContainer.Visible = false
+        KaitunContainer.Visible = false
+        SupportContainer.Visible = false
+    else
+        MainFrame.Size = UDim2.new(0, 440, 0, 420)
+        LogoIcon.Visible = false
+        Title.Visible = true
+        TabBar.Visible = true
+        HeaderCover.Visible = true
+        ScriptContainer.Visible = true
+    end
+end)
+
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- 6. Danh sách Hubs trong mục Script
 local hubList = {
+    { Name = "DatThg V2", URL = "https://raw.githubusercontent.com/LuaCrack/DatThg/refs/heads/main/DatThgV2" },
+    { Name = "Red Hub", URL = "https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua" },
+    { Name = "Hoho Hub", URL = "https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI" },
+    { Name = "Realkid Hub", URL = "https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua" },
+    { Name = "Gravity Hub", URL = "https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua" },
+    { Name = "Trẩu Hub", URL = "https://raw.githubusercontent.com/trungdao2k4/buffalo/refs/heads/main/trauhubv10" },
+    { Name = "6_7 Hub", URL = "https://rawscripts.net/raw/Universal-Script-67-Hub-Dev-141304" },
+    { 
+        Name = "Nhặt Rương", 
+        CustomRun = function()
+            repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+            getgenv().Team = "Marines"
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/trongdeptraihucscript/Main/refs/heads/main/TN-Tp-Chest.lua"))()
+        end
+    },
+    { Name = "Night Hub", URL = "https://github.com/WhiteX1208/Scripts/blob/main/HopScript.luau?raw=true" },
+    {
+        Name = "Teddy Hub",
+        CustomRun = function()
+            repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Teddyseetink/Haidepzai/refs/heads/main/TEDDYHUB-FREEMIUM"))()
+        end
+    },
+    {
+        Name = "Săn Bounty",
+        CustomRun = function()
+            getgenv().script_mode = "PVP"
+            local script_mode = "PVP" 
+            local loader = loadstring
+            local url = "https://raw.githubusercontent.com/hermanos-dev/hermanos-hub/refs/heads/main/Loader.lua"
+            local response = game:HttpGet(url)
+            loader(response)()
+        end
+    },
+    { Name = "X8 Luck", URL = "https://raw.githubusercontent.com/Ytzeno99/bufflucky/refs/heads/main/LucKyRadomFruit.lua" },
     { Name = "Quantum Onyx", URL = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua" },
     { Name = "Pole Hub", URL = "https://raw.githubusercontent.com/Banana/refs/heads/main/Pole/script.luau" },
     { Name = "Comet Hub", URL = "https://raw.githubusercontent.com/Stellar/refs/heads/main/Comet/script.luau" },
@@ -180,45 +345,52 @@ local hubList = {
 
 for _, hub in ipairs(hubList) do
     local ItemFrame = Instance.new("Frame")
-    ItemFrame.Size = UDim2.new(1, -10, 0, 36)
-    ItemFrame.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    ItemFrame.Size = UDim2.new(1, -6, 0, 38)
+    ItemFrame.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
     ItemFrame.Parent = ScriptContainer
 
     local ItemCorner = Instance.new("UICorner")
-    ItemCorner.CornerRadius = UDim.new(0, 6)
+    ItemCorner.CornerRadius = UDim.new(0, 8)
     ItemCorner.Parent = ItemFrame
+
+    local ItemStroke = Instance.new("UIStroke")
+    ItemStroke.Color = Color3.fromRGB(30, 42, 64)
+    ItemStroke.Thickness = 1
+    ItemStroke.Parent = ItemFrame
 
     local HubLabel = Instance.new("TextLabel")
     HubLabel.Size = UDim2.new(1, -110, 1, 0)
-    HubLabel.Position = UDim2.new(0, 12, 0, 0)
+    HubLabel.Position = UDim2.new(0, 14, 0, 0)
     HubLabel.BackgroundTransparency = 1
     HubLabel.Text = hub.Name
-    HubLabel.TextColor3 = Color3.fromRGB(220, 235, 255)
-    HubLabel.Font = Enum.Font.SourceSansSemibold
-    HubLabel.TextSize = 15
+    HubLabel.TextColor3 = Color3.fromRGB(230, 240, 255)
+    HubLabel.Font = Enum.Font.GothamMedium
+    HubLabel.TextSize = 13.5
     HubLabel.TextXAlignment = Enum.TextXAlignment.Left
     HubLabel.Parent = ItemFrame
 
     local ExecBtn = Instance.new("TextButton")
-    ExecBtn.Size = UDim2.new(0, 90, 0, 26)
-    ExecBtn.Position = UDim2.new(1, -96, 0.5, -13)
-    ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 220)
+    ExecBtn.Size = UDim2.new(0, 92, 0, 26)
+    ExecBtn.Position = UDim2.new(1, -98, 0.5, -13)
+    ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
     ExecBtn.Text = "Execute"
     ExecBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ExecBtn.Font = Enum.Font.SourceSansBold
-    ExecBtn.TextSize = 13
+    ExecBtn.Font = Enum.Font.GothamBold
+    ExecBtn.TextSize = 12
     ExecBtn.Parent = ItemFrame
 
     local ExecCorner = Instance.new("UICorner")
-    ExecCorner.CornerRadius = UDim.new(0, 5)
+    ExecCorner.CornerRadius = UDim.new(0, 6)
     ExecCorner.Parent = ExecBtn
 
     ExecBtn.MouseButton1Click:Connect(function()
         ExecBtn.Text = "Loading..."
-        ExecBtn.BackgroundColor3 = Color3.fromRGB(180, 130, 0)
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 140, 0)
 
         local success, err = pcall(function()
-            if hub.HasFlag then
+            if hub.CustomRun then
+                hub.CustomRun()
+            elseif hub.HasFlag then
                 loadstring(game:HttpGet(hub.URL, true))()
             else
                 loadstring(game:HttpGet(hub.URL))()
@@ -227,164 +399,88 @@ for _, hub in ipairs(hubList) do
 
         if success then
             ExecBtn.Text = "Success!"
-            ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 120)
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 185, 110)
         else
             ExecBtn.Text = "Error!"
-            ExecBtn.BackgroundColor3 = Color3.fromRGB(180, 40, 40)
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
             warn("[Thọ Hub Error - " .. hub.Name .. "]: " .. tostring(err))
         end
 
         task.wait(2)
         ExecBtn.Text = "Execute"
-        ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 220)
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
     end)
 end
 
--- 5. Danh sách tính năng trong mục Hỗ trợ
-local supportList = {
-    {
-        Name = "Spider Script",
-        Func = function()
-            loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))("Spider Script")
+-- 7. Danh sách Hubs trong mục Kaitun
+local kaitunList = {
+    { 
+        Name = "Var Hub (Kaitun)", 
+        CustomRun = function()
+            repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-ModScript/Var-Hubs/refs/heads/main/Var%20Hub"))()
         end
     },
-    {
-        Name = "Vào lại Server (Rejoin)",
-        Func = function()
-            game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
-        end
-    },
-    {
-        Name = "Đổi Server khác (Server Hop)",
-        Func = function()
-            local TeleportService = game:GetService("TeleportService")
-            local HttpService = game:GetService("HttpService")
-            local Api = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/0?sortOrder=Desc&limit=100"
-            local success, result = pcall(function()
-                return HttpService:JSONDecode(game:HttpGet(Api))
-            end)
-            if success and result and result.data then
-                for _, s in ipairs(result.data) do
-                    if type(s) == "table" and s.playing < s.maxPlayers and s.id ~= game.JobId then
-                        TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id)
-                        break
-                    end
-                end
-            end
-        end
-    },
-    {
-        Name = "Giảm Lag (FPS Booster)",
-        Func = function()
-            for _, v in pairs(game:GetDescendants()) do
-                if v:IsA("Part") or v:IsA("MeshPart") then
-                    v.Material = Enum.Material.SmoothPlastic
-                elseif v:IsA("Decal") or v:IsA("Texture") then
-                    v:Destroy()
-                end
-            end
-        end
-    },
-    {
-        Name = "Copy Link Discord Thọ Hub",
-        Func = function()
-            if setclipboard then
-                setclipboard("https://discord.gg/thohub")
-            end
+    { 
+        Name = "Black V Hub (Kaitun BF)", 
+        CustomRun = function()
+            getgenv().Config = {
+                ["Hide UI"] = false,
+                ["White Screen"] = false,
+                ["Black Screen"] = false,
+                ["Start Farm"] = true,
+                ["Exit When Full Item"] = true,  
+                ["Settings"] = { ["FPS Booster"] = true },
+                ["Auto Chat"] = { ["Enabled"] = false, ["Content"] = {"", "", ""}, ["Time Chat"] = 9999 },
+                ["HOP"] = { ["Enabled"] = true, ["time hop"] = 3000 },
+                ["Melee"] = {
+                    ["All Melee V1"] = true,
+                    ["Super Huamn"] = true,
+                    ["Dragon Talon"] = true,
+                    ["Sharkman Karate"] = true,
+                    ["Elechic Claw"] = true,
+                    ["GodHuman"] = true,
+                },
+                ["Sword"] = {
+                    ["All Sword"] = true, ["Saber"] = true, ["Pole"] = true, ["Rengoku"] = true,
+                    ["Midnight Blade"] = true, ["Soul Cane"] = true, ["Gravity Cane"] = true,
+                    ["Dragon Trident"] = true, ["Legendary Sword"] = true, ["True Triple Katana"] = true,
+                    ["Twin Hooks"] = true, ["Canvander"] = true, ["Buddy Sword"] = true,
+                    ["Hallow Scythe"] = true, ["Yama"] = true, ["Tushita"] = true, ["Cursed Dual Katana"] = true,
+                },
+                ["Gun"] = {
+                    ["All Gun"] = true, ["Acidum Rifle"] = true, ["Kabucha"] = true,
+                    ["Serpent Bow"] = true, ["Skull Guitar"] = true,
+                },
+                ["Race"] = { ["Auto V2"] = true, ["Auto V3"] = true },
+            }
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/nvb201112/Black-V-Hub/refs/heads/main/KaitunBF.luau"))()
         end
     }
 }
 
-for _, item in ipairs(supportList) do
+for _, item in ipairs(kaitunList) do
     local ItemFrame = Instance.new("Frame")
-    ItemFrame.Size = UDim2.new(1, -10, 0, 36)
-    ItemFrame.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-    ItemFrame.Parent = SupportContainer
+    ItemFrame.Size = UDim2.new(1, -6, 0, 38)
+    ItemFrame.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
+    ItemFrame.Parent = KaitunContainer
 
     local ItemCorner = Instance.new("UICorner")
-    ItemCorner.CornerRadius = UDim.new(0, 6)
+    ItemCorner.CornerRadius = UDim.new(0, 8)
     ItemCorner.Parent = ItemFrame
+
+    local ItemStroke = Instance.new("UIStroke")
+    ItemStroke.Color = Color3.fromRGB(30, 42, 64)
+    ItemStroke.Thickness = 1
+    ItemStroke.Parent = ItemFrame
 
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(1, -110, 1, 0)
-    Label.Position = UDim2.new(0, 12, 0, 0)
+    Label.Position = UDim2.new(0, 14, 0, 0)
     Label.BackgroundTransparency = 1
     Label.Text = item.Name
-    Label.TextColor3 = Color3.fromRGB(220, 235, 255)
-    Label.Font = Enum.Font.SourceSansSemibold
-    Label.TextSize = 14
+    Label.TextColor3 = Color3.fromRGB(230, 240, 255)
+    Label.Font = Enum.Font.GothamMedium
+    Label.TextSize = 13.5
     Label.TextXAlignment = Enum.TextXAlignment.Left
-    Label.Parent = ItemFrame
-
-    local ActionBtn = Instance.new("TextButton")
-    ActionBtn.Size = UDim2.new(0, 90, 0, 26)
-    ActionBtn.Position = UDim2.new(1, -96, 0.5, -13)
-    ActionBtn.BackgroundColor3 = Color3.fromRGB(30, 80, 140)
-    ActionBtn.Text = "Kích hoạt"
-    ActionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ActionBtn.Font = Enum.Font.SourceSansBold
-    ActionBtn.TextSize = 13
-    ActionBtn.Parent = ItemFrame
-
-    local ActionCorner = Instance.new("UICorner")
-    ActionCorner.CornerRadius = UDim.new(0, 5)
-    ActionCorner.Parent = ActionBtn
-
-    ActionBtn.MouseButton1Click:Connect(function()
-        pcall(item.Func)
-        ActionBtn.Text = "Xong!"
-        ActionBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 120)
-        task.wait(1.5)
-        ActionBtn.Text = "Kích hoạt"
-        ActionBtn.BackgroundColor3 = Color3.fromRGB(30, 80, 140)
-    end)
-end
-
--- 6. Xử lý Chuyển Tab
-TabScriptBtn.MouseButton1Click:Connect(function()
-    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 220)
-    TabScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TabSupportBtn.BackgroundColor3 = Color3.fromRGB(25, 35, 50)
-    TabSupportBtn.TextColor3 = Color3.fromRGB(180, 200, 220)
-
-    ScriptContainer.Visible = true
-    SupportContainer.Visible = false
-end)
-
-TabSupportBtn.MouseButton1Click:Connect(function()
-    TabSupportBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 220)
-    TabSupportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(25, 35, 50)
-    TabScriptBtn.TextColor3 = Color3.fromRGB(180, 200, 220)
-
-    ScriptContainer.Visible = false
-    SupportContainer.Visible = true
-end)
-
--- 7. Xử lý Đóng / Thu nhỏ
-local isMinimized = false
-
-MinimizeBtn.MouseButton1Click:Connect(function()
-    isMinimized = not isMinimized
-    if isMinimized then
-        TabBar.Visible = false
-        ScriptContainer.Visible = false
-        SupportContainer.Visible = false
-        MainFrame:TweenSize(UDim2.new(0, 420, 0, 45), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-        MinimizeBtn.Text = "+"
-    else
-        MainFrame:TweenSize(UDim2.new(0, 420, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2, true)
-        task.wait(0.15)
-        TabBar.Visible = true
-        if TabScriptBtn.BackgroundColor3 == Color3.fromRGB(0, 130, 220) then
-            ScriptContainer.Visible = true
-        else
-            SupportContainer.Visible = true
-        end
-        MinimizeBtn.Text = "-"
-    end
-end)
-
-CloseBtn.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
+    Label
