@@ -1,10 +1,17 @@
--- 1. Khởi tạo Giao diện (ScreenGui)
+-- ==========================================
+-- THỌ HUB - MULTI-GAME LOADER (UPDATED)
+-- ==========================================
+
 local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local LocalPlayer = Players.LocalPlayer
 
 if CoreGui:FindFirstChild("ThoHubLoaderUI") then
     CoreGui.ThoHubLoaderUI:Destroy()
 end
 
+-- 1. Khởi tạo Giao diện (ScreenGui)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ThoHubLoaderUI"
 ScreenGui.Parent = CoreGui
@@ -58,7 +65,6 @@ HeaderCover.BackgroundColor3 = Color3.fromRGB(20, 45, 80)
 HeaderCover.BorderSizePixel = 0
 HeaderCover.Parent = Header
 
--- 🖼️ Ảnh hiển thị khi thu nhỏ thành hình vuông
 local LogoIcon = Instance.new("ImageLabel")
 LogoIcon.Name = "LogoIcon"
 LogoIcon.Size = UDim2.new(0, 32, 0, 32)
@@ -72,7 +78,7 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -90, 1, 0)
 Title.Position = UDim2.new(0, 16, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "⚡ THỌ HUB - PREMIUM LOADER"
+Title.Text = "⚡ THỌ HUB - LOADER"
 Title.TextColor3 = Color3.fromRGB(130, 220, 255)
 Title.TextSize = 15
 Title.Font = Enum.Font.GothamBold
@@ -109,42 +115,64 @@ local CloseCorner = Instance.new("UICorner")
 CloseCorner.CornerRadius = UDim.new(0, 8)
 CloseCorner.Parent = CloseBtn
 
--- 3. Thanh Chuyển Tab (Tab Bar) - Gồm 3 Tab: Script, Kaitun, Hỗ trợ
-local TabBar = Instance.new("Frame")
+-- Forward declarations cho containers
+local BloxFruitContainer, StealEggContainer, SupportContainer, TabBar
+
+-- Xử lý nút Thu nhỏ (-)
+local isMinimized = false
+MinimizeBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    BloxFruitContainer.Visible = not isMinimized and TabBar.Visible
+    StealEggContainer.Visible = false
+    SupportContainer.Visible = false
+    TabBar.Visible = not isMinimized
+    LogoIcon.Visible = isMinimized
+    Title.Visible = not isMinimized
+    MainFrame.Size = isMinimized and UDim2.new(0, 440, 0, 48) or UDim2.new(0, 440, 0, 420)
+    MinimizeBtn.Text = isMinimized and "+" or "-"
+end)
+
+-- Xử lý nút Đóng (×)
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- 3. Thanh Chuyển Tab (Tab Bar - Gồm 3 Tab)
+TabBar = Instance.new("Frame")
 TabBar.Name = "TabBar"
 TabBar.Size = UDim2.new(1, -24, 0, 36)
 TabBar.Position = UDim2.new(0, 12, 0, 56)
 TabBar.BackgroundTransparency = 1
 TabBar.Parent = MainFrame
 
-local TabScriptBtn = Instance.new("TextButton")
-TabScriptBtn.Name = "TabScriptBtn"
-TabScriptBtn.Size = UDim2.new(0.33, -4, 1, 0)
-TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
-TabScriptBtn.Text = "📜 Script"
-TabScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-TabScriptBtn.Font = Enum.Font.GothamBold
-TabScriptBtn.TextSize = 12
-TabScriptBtn.Parent = TabBar
+local TabBloxFruitBtn = Instance.new("TextButton")
+TabBloxFruitBtn.Name = "TabBloxFruitBtn"
+TabBloxFruitBtn.Size = UDim2.new(0.33, -4, 1, 0)
+TabBloxFruitBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+TabBloxFruitBtn.Text = "🍎 Blox Fruit"
+TabBloxFruitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+TabBloxFruitBtn.Font = Enum.Font.GothamBold
+TabBloxFruitBtn.TextSize = 12
+TabBloxFruitBtn.Parent = TabBar
 
 local Tab1Corner = Instance.new("UICorner")
 Tab1Corner.CornerRadius = UDim.new(0, 8)
-Tab1Corner.Parent = TabScriptBtn
+Tab1Corner.Parent = TabBloxFruitBtn
 
-local TabKaitunBtn = Instance.new("TextButton")
-TabKaitunBtn.Name = "TabKaitunBtn"
-TabKaitunBtn.Size = UDim2.new(0.33, -4, 1, 0)
-TabKaitunBtn.Position = UDim2.new(0.33, 2, 0, 0)
-TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-TabKaitunBtn.Text = "🤖 Kaitun"
-TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
-TabKaitunBtn.Font = Enum.Font.GothamBold
-TabKaitunBtn.TextSize = 12
-TabKaitunBtn.Parent = TabBar
+local TabStealEggBtn = Instance.new("TextButton")
+TabStealEggBtn.Name = "TabStealEggBtn"
+TabStealEggBtn.Size = UDim2.new(0.33, -4, 1, 0)
+TabStealEggBtn.Position = UDim2.new(0.33, 2, 0, 0)
+TabStealEggBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+TabStealEggBtn.Text = "🥚 Steal An Egg"
+TabStealEggBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+TabStealEggBtn.Font = Enum.Font.GothamBold
+TabStealEggBtn.TextSize = 11
+TabStealEggBtn.Parent = TabBar
 
 local Tab3Corner = Instance.new("UICorner")
 Tab3Corner.CornerRadius = UDim.new(0, 8)
-Tab3Corner.Parent = TabKaitunBtn
+Tab3Corner.Parent = TabStealEggBtn
 
 local TabSupportBtn = Instance.new("TextButton")
 TabSupportBtn.Name = "TabSupportBtn"
@@ -161,49 +189,45 @@ local Tab2Corner = Instance.new("UICorner")
 Tab2Corner.CornerRadius = UDim.new(0, 8)
 Tab2Corner.Parent = TabSupportBtn
 
--- === CONTAINER 1: TAB SCRIPT ===
-local ScriptContainer = Instance.new("ScrollingFrame")
-ScriptContainer.Name = "ScriptContainer"
-ScriptContainer.Size = UDim2.new(1, -24, 1, -106)
-ScriptContainer.Position = UDim2.new(0, 12, 0, 100)
-ScriptContainer.BackgroundTransparency = 1
-ScriptContainer.BorderSizePixel = 0
-ScriptContainer.ScrollBarThickness = 4
-ScriptContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
-ScriptContainer.Parent = MainFrame
+-- Containers
+BloxFruitContainer = Instance.new("ScrollingFrame")
+BloxFruitContainer.Name = "BloxFruitContainer"
+BloxFruitContainer.Size = UDim2.new(1, -24, 1, -106)
+BloxFruitContainer.Position = UDim2.new(0, 12, 0, 100)
+BloxFruitContainer.BackgroundTransparency = 1
+BloxFruitContainer.BorderSizePixel = 0
+BloxFruitContainer.ScrollBarThickness = 4
+BloxFruitContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
+BloxFruitContainer.Parent = MainFrame
 
-local ScriptListLayout = Instance.new("UIListLayout")
-ScriptListLayout.Parent = ScriptContainer
-ScriptListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ScriptListLayout.Padding = UDim.new(0, 8)
-
-ScriptListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    ScriptContainer.CanvasSize = UDim2.new(0, 0, 0, ScriptListLayout.AbsoluteContentSize.Y + 12)
+local BloxFruitListLayout = Instance.new("UIListLayout")
+BloxFruitListLayout.Parent = BloxFruitContainer
+BloxFruitListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+BloxFruitListLayout.Padding = UDim.new(0, 8)
+BloxFruitListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    BloxFruitContainer.CanvasSize = UDim2.new(0, 0, 0, BloxFruitListLayout.AbsoluteContentSize.Y + 12)
 end)
 
--- === CONTAINER 2: TAB KAITUN ===
-local KaitunContainer = Instance.new("ScrollingFrame")
-KaitunContainer.Name = "KaitunContainer"
-KaitunContainer.Size = UDim2.new(1, -24, 1, -106)
-KaitunContainer.Position = UDim2.new(0, 12, 0, 100)
-KaitunContainer.BackgroundTransparency = 1
-KaitunContainer.BorderSizePixel = 0
-KaitunContainer.Visible = false
-KaitunContainer.ScrollBarThickness = 4
-KaitunContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
-KaitunContainer.Parent = MainFrame
+StealEggContainer = Instance.new("ScrollingFrame")
+StealEggContainer.Name = "StealEggContainer"
+StealEggContainer.Size = UDim2.new(1, -24, 1, -106)
+StealEggContainer.Position = UDim2.new(0, 12, 0, 100)
+StealEggContainer.BackgroundTransparency = 1
+StealEggContainer.BorderSizePixel = 0
+StealEggContainer.Visible = false
+StealEggContainer.ScrollBarThickness = 4
+StealEggContainer.ScrollBarImageColor3 = Color3.fromRGB(0, 140, 255)
+StealEggContainer.Parent = MainFrame
 
-local KaitunListLayout = Instance.new("UIListLayout")
-KaitunListLayout.Parent = KaitunContainer
-KaitunListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-KaitunListLayout.Padding = UDim.new(0, 8)
-
-KaitunListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    KaitunContainer.CanvasSize = UDim2.new(0, 0, 0, KaitunListLayout.AbsoluteContentSize.Y + 12)
+local StealEggListLayout = Instance.new("UIListLayout")
+StealEggListLayout.Parent = StealEggContainer
+StealEggListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+StealEggListLayout.Padding = UDim.new(0, 8)
+StealEggListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    StealEggContainer.CanvasSize = UDim2.new(0, 0, 0, StealEggListLayout.AbsoluteContentSize.Y + 12)
 end)
 
--- === CONTAINER 3: TAB HỖ TRỢ ===
-local SupportContainer = Instance.new("ScrollingFrame")
+SupportContainer = Instance.new("ScrollingFrame")
 SupportContainer.Name = "SupportContainer"
 SupportContainer.Size = UDim2.new(1, -24, 1, -106)
 SupportContainer.Position = UDim2.new(0, 12, 0, 100)
@@ -218,76 +242,48 @@ local SupportListLayout = Instance.new("UIListLayout")
 SupportListLayout.Parent = SupportContainer
 SupportListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 SupportListLayout.Padding = UDim.new(0, 8)
-
 SupportListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
     SupportContainer.CanvasSize = UDim2.new(0, 0, 0, SupportListLayout.AbsoluteContentSize.Y + 12)
 end)
 
--- 4. Chức năng chuyển Tab
-TabScriptBtn.MouseButton1Click:Connect(function()
-    ScriptContainer.Visible = true
-    KaitunContainer.Visible = false
+-- Sự kiện bấm chuyển Tab
+TabBloxFruitBtn.MouseButton1Click:Connect(function()
+    BloxFruitContainer.Visible = true
+    StealEggContainer.Visible = false
     SupportContainer.Visible = false
-    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
-    TabScriptBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-    TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabBloxFruitBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+    TabBloxFruitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabStealEggBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabStealEggBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
     TabSupportBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
     TabSupportBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
 end)
 
-TabKaitunBtn.MouseButton1Click:Connect(function()
-    ScriptContainer.Visible = false
-    KaitunContainer.Visible = true
+TabStealEggBtn.MouseButton1Click:Connect(function()
+    BloxFruitContainer.Visible = false
+    StealEggContainer.Visible = true
     SupportContainer.Visible = false
-    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-    TabScriptBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
-    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
-    TabKaitunBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabBloxFruitBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabBloxFruitBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabStealEggBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
+    TabStealEggBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     TabSupportBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
     TabSupportBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
 end)
 
 TabSupportBtn.MouseButton1Click:Connect(function()
-    ScriptContainer.Visible = false
-    KaitunContainer.Visible = false
+    BloxFruitContainer.Visible = false
+    StealEggContainer.Visible = false
     SupportContainer.Visible = true
-    TabScriptBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-    TabScriptBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
-    TabKaitunBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
-    TabKaitunBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabBloxFruitBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabBloxFruitBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
+    TabStealEggBtn.BackgroundColor3 = Color3.fromRGB(22, 30, 45)
+    TabStealEggBtn.TextColor3 = Color3.fromRGB(160, 180, 205)
     TabSupportBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 255)
     TabSupportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 end)
 
--- 5. Xử lý Nút Thu nhỏ (-) và Đóng (X)
-local isMinimized = false
-MinimizeBtn.MouseButton1Click:Connect(function()
-    isMinimized = not isMinimized
-    if isMinimized then
-        MainFrame.Size = UDim2.new(0, 70, 0, 70)
-        LogoIcon.Visible = true
-        Title.Visible = false
-        TabBar.Visible = false
-        HeaderCover.Visible = false
-        ScriptContainer.Visible = false
-        KaitunContainer.Visible = false
-        SupportContainer.Visible = false
-    else
-        MainFrame.Size = UDim2.new(0, 440, 0, 420)
-        LogoIcon.Visible = false
-        Title.Visible = true
-        TabBar.Visible = true
-        HeaderCover.Visible = true
-        ScriptContainer.Visible = true
-    end
-end)
-
-CloseBtn.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
--- 6. Danh sách Hubs trong mục Script
+-- 4. Danh sách Blox Fruit Scripts
 local hubList = {
     { Name = "DatThg V2", URL = "https://raw.githubusercontent.com/LuaCrack/DatThg/refs/heads/main/DatThgV2" },
     { Name = "Red Hub", URL = "https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua" },
@@ -295,59 +291,22 @@ local hubList = {
     { Name = "Realkid Hub", URL = "https://raw.githubusercontent.com/realkidhub/realkid/refs/heads/main/main.lua" },
     { Name = "Gravity Hub", URL = "https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua" },
     { Name = "Trẩu Hub", URL = "https://raw.githubusercontent.com/trungdao2k4/buffalo/refs/heads/main/trauhubv10" },
-    { Name = "6_7 Hub", URL = "https://rawscripts.net/raw/Universal-Script-67-Hub-Dev-141304" },
     { 
         Name = "Nhặt Rương", 
         CustomRun = function()
-            repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+            repeat task.wait() until game:IsLoaded() and LocalPlayer
             getgenv().Team = "Marines"
             loadstring(game:HttpGet("https://raw.githubusercontent.com/trongdeptraihucscript/Main/refs/heads/main/TN-Tp-Chest.lua"))()
         end
     },
-    { Name = "Night Hub", URL = "https://github.com/WhiteX1208/Scripts/blob/main/HopScript.luau?raw=true" },
-    {
-        Name = "Teddy Hub",
-        CustomRun = function()
-            repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Teddyseetink/Haidepzai/refs/heads/main/TEDDYHUB-FREEMIUM"))()
-        end
-    },
-    {
-        Name = "Săn Bounty",
-        CustomRun = function()
-            getgenv().script_mode = "PVP"
-            local script_mode = "PVP" 
-            local loader = loadstring
-            local url = "https://raw.githubusercontent.com/hermanos-dev/hermanos-hub/refs/heads/main/Loader.lua"
-            local response = game:HttpGet(url)
-            loader(response)()
-        end
-    },
-    { Name = "X8 Luck", URL = "https://raw.githubusercontent.com/Ytzeno99/bufflucky/refs/heads/main/LucKyRadomFruit.lua" },
-    { Name = "Quantum Onyx", URL = "https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua" },
-    { Name = "Pole Hub", URL = "https://raw.githubusercontent.com/Banana/refs/heads/main/Pole/script.luau" },
-    { Name = "Comet Hub", URL = "https://raw.githubusercontent.com/Stellar/refs/heads/main/Comet/script.luau" },
-    { Name = "EZ Hub", URL = "https://raw.githubusercontent.com/Fluent/refs/heads/main/EZ/script.luau" },
-    { Name = "GB Hub", URL = "https://raw.githubusercontent.com/Banana/refs/heads/main/GB/script.luau" },
-    { Name = "DB Hub", URL = "https://raw.githubusercontent.com/Banana/refs/heads/main/DB/script.luau" },
-    { Name = "Wind Hub", URL = "https://raw.githubusercontent.com/Wind/refs/heads/main/Wind/script.luau" },
-    { Name = "Star Hub", URL = "https://raw.githubusercontent.com/Stellar/refs/heads/main/Star/script.luau" },
-    { Name = "ARC Hub", URL = "https://raw.githubusercontent.com/Arclylic/refs/heads/main/ARC/script.luau" },
-    { Name = "Brave Hub", URL = "https://raw.githubusercontent.com/FruitBlox/refs/heads/main/BraveLoader", HasFlag = true },
-    { Name = "Longhihi Hub", URL = "https://raw.githubusercontent.com/LongHiHiV4.5.1/refs/heads/main/Main.Txt.Luau" },
-    { Name = "Ndraawz Hub", URL = "https://api-ndraawz.vercel.app/api/v1/NZ-DAE0SFRD00" },
-    { Name = "Relz Hub", URL = "https://relzhub.com/loader" },
-    { Name = "Vezyra Hub", URL = "https://raw.githubusercontent.com/Vezyra/refs/heads/main/VezyraHubMainBloxFruit.lua.txt" },
-    { Name = "FE Vehicle Script V2", URL = "https://rawscripts.net/raw/Universal-Script-FE-Vehicle-Script-V2-88610" },
-    { Name = "Client Replication - John Doe", URL = "https://rawscripts.net/raw/Client-Replication-John-doe-up-by-gojohdkaisenkt-34198" },
-    { Name = "Tiger X", URL = "https://rawscripts.net/raw/Universal-Script-Tiger-x-34229" }
+    { Name = "Night Hub", URL = "https://github.com/WhiteX1208/Scripts/blob/main/HopScript.luau?raw=true" }
 }
 
 for _, hub in ipairs(hubList) do
     local ItemFrame = Instance.new("Frame")
     ItemFrame.Size = UDim2.new(1, -6, 0, 38)
     ItemFrame.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
-    ItemFrame.Parent = ScriptContainer
+    ItemFrame.Parent = BloxFruitContainer
 
     local ItemCorner = Instance.new("UICorner")
     ItemCorner.CornerRadius = UDim.new(0, 8)
@@ -390,8 +349,6 @@ for _, hub in ipairs(hubList) do
         local success, err = pcall(function()
             if hub.CustomRun then
                 hub.CustomRun()
-            elseif hub.HasFlag then
-                loadstring(game:HttpGet(hub.URL, true))()
             else
                 loadstring(game:HttpGet(hub.URL))()
             end
@@ -412,58 +369,24 @@ for _, hub in ipairs(hubList) do
     end)
 end
 
--- 7. Danh sách Hubs trong mục Kaitun
-local kaitunList = {
+-- 5. Danh sách Steal An Egg Scripts (Tab mới)
+local stealEggList = {
+    { Name = "Ouroboros Hub", URL = "https://raw.githubusercontent.com/joustingmatch/Ouroboros/main/loader.lua" },
+    { Name = "Night Hub", URL = "https://raw.githubusercontent.com/WhiteX1208/Scripts/refs/heads/main/StealAnEggs.luau" },
+    { Name = "Fox Name Hub", URL = "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua" },
     { 
-        Name = "Var Hub (Kaitun)", 
+        Name = "Decode Hub", 
         CustomRun = function()
-            repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-ModScript/Var-Hubs/refs/heads/main/Var%20Hub"))()
-        end
-    },
-    { 
-        Name = "Black V Hub (Kaitun BF)", 
-        CustomRun = function()
-            getgenv().Config = {
-                ["Hide UI"] = false,
-                ["White Screen"] = false,
-                ["Black Screen"] = false,
-                ["Start Farm"] = true,
-                ["Exit When Full Item"] = true,  
-                ["Settings"] = { ["FPS Booster"] = true },
-                ["Auto Chat"] = { ["Enabled"] = false, ["Content"] = {"", "", ""}, ["Time Chat"] = 9999 },
-                ["HOP"] = { ["Enabled"] = true, ["time hop"] = 3000 },
-                ["Melee"] = {
-                    ["All Melee V1"] = true,
-                    ["Super Huamn"] = true,
-                    ["Dragon Talon"] = true,
-                    ["Sharkman Karate"] = true,
-                    ["Elechic Claw"] = true,
-                    ["GodHuman"] = true,
-                },
-                ["Sword"] = {
-                    ["All Sword"] = true, ["Saber"] = true, ["Pole"] = true, ["Rengoku"] = true,
-                    ["Midnight Blade"] = true, ["Soul Cane"] = true, ["Gravity Cane"] = true,
-                    ["Dragon Trident"] = true, ["Legendary Sword"] = true, ["True Triple Katana"] = true,
-                    ["Twin Hooks"] = true, ["Canvander"] = true, ["Buddy Sword"] = true,
-                    ["Hallow Scythe"] = true, ["Yama"] = true, ["Tushita"] = true, ["Cursed Dual Katana"] = true,
-                },
-                ["Gun"] = {
-                    ["All Gun"] = true, ["Acidum Rifle"] = true, ["Kabucha"] = true,
-                    ["Serpent Bow"] = true, ["Skull Guitar"] = true,
-                },
-                ["Race"] = { ["Auto V2"] = true, ["Auto V3"] = true },
-            }
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/nvb201112/Black-V-Hub/refs/heads/main/KaitunBF.luau"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ItzYumi/Decode/refs/heads/main/DE%3ACODE.lua", true))()
         end
     }
 }
 
-for _, item in ipairs(kaitunList) do
+for _, item in ipairs(stealEggList) do
     local ItemFrame = Instance.new("Frame")
     ItemFrame.Size = UDim2.new(1, -6, 0, 38)
     ItemFrame.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
-    ItemFrame.Parent = KaitunContainer
+    ItemFrame.Parent = StealEggContainer
 
     local ItemCorner = Instance.new("UICorner")
     ItemCorner.CornerRadius = UDim.new(0, 8)
@@ -483,4 +406,127 @@ for _, item in ipairs(kaitunList) do
     Label.Font = Enum.Font.GothamMedium
     Label.TextSize = 13.5
     Label.TextXAlignment = Enum.TextXAlignment.Left
-    Label
+    Label.Parent = ItemFrame
+
+    local ExecBtn = Instance.new("TextButton")
+    ExecBtn.Size = UDim2.new(0, 92, 0, 26)
+    ExecBtn.Position = UDim2.new(1, -98, 0.5, -13)
+    ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
+    ExecBtn.Text = "Execute"
+    ExecBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ExecBtn.Font = Enum.Font.GothamBold
+    ExecBtn.TextSize = 12
+    ExecBtn.Parent = ItemFrame
+
+    local ExecCorner = Instance.new("UICorner")
+    ExecCorner.CornerRadius = UDim.new(0, 6)
+    ExecCorner.Parent = ExecBtn
+
+    ExecBtn.MouseButton1Click:Connect(function()
+        ExecBtn.Text = "Loading..."
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 140, 0)
+
+        local success, err = pcall(function()
+            if item.CustomRun then
+                item.CustomRun()
+            else
+                loadstring(game:HttpGet(item.URL))()
+            end
+        end)
+
+        if success then
+            ExecBtn.Text = "Success!"
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 185, 110)
+        else
+            ExecBtn.Text = "Error!"
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+            warn("[Thọ Hub Error - " .. item.Name .. "]: " .. tostring(err))
+        end
+
+        task.wait(2)
+        ExecBtn.Text = "Execute"
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
+    end)
+end
+
+-- 6. Danh sách Hỗ trợ
+local supportList = {
+    {
+        Name = "Fly GUI V3",
+        Func = function()
+            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-gui-v3-30439"))()
+        end
+    },
+    {
+        Name = "Vào lại Server (Rejoin)",
+        Func = function()
+            TeleportService:Teleport(game.PlaceId, LocalPlayer)
+        end
+    }
+}
+
+for _, item in ipairs(supportList) do
+    local ItemFrame = Instance.new("Frame")
+    ItemFrame.Size = UDim2.new(1, -6, 0, 38)
+    ItemFrame.BackgroundColor3 = Color3.fromRGB(18, 24, 36)
+    ItemFrame.Parent = SupportContainer
+
+    local ItemCorner = Instance.new("UICorner")
+    ItemCorner.CornerRadius = UDim.new(0, 8)
+    ItemCorner.Parent = ItemFrame
+
+    local ItemStroke = Instance.new("UIStroke")
+    ItemStroke.Color = Color3.fromRGB(30, 42, 64)
+    ItemStroke.Thickness = 1
+    ItemStroke.Parent = ItemFrame
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, -110, 1, 0)
+    Label.Position = UDim2.new(0, 14, 0, 0)
+    Label.BackgroundTransparency = 1
+    Label.Text = item.Name
+    Label.TextColor3 = Color3.fromRGB(230, 240, 255)
+    Label.Font = Enum.Font.GothamMedium
+    Label.TextSize = 13.5
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = ItemFrame
+
+    local ExecBtn = Instance.new("TextButton")
+    ExecBtn.Size = UDim2.new(0, 92, 0, 26)
+    ExecBtn.Position = UDim2.new(1, -98, 0.5, -13)
+    ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
+    ExecBtn.Text = "Execute"
+    ExecBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ExecBtn.Font = Enum.Font.GothamBold
+    ExecBtn.TextSize = 12
+    ExecBtn.Parent = ItemFrame
+
+    local ExecCorner = Instance.new("UICorner")
+    ExecCorner.CornerRadius = UDim.new(0, 6)
+    ExecCorner.Parent = ExecBtn
+
+    ExecBtn.MouseButton1Click:Connect(function()
+        ExecBtn.Text = "Loading..."
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 140, 0)
+
+        local success, err = pcall(function()
+            if item.Func then
+                item.Func()
+            end
+        end)
+
+        if success then
+            ExecBtn.Text = "Success!"
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 185, 110)
+        else
+            ExecBtn.Text = "Error!"
+            ExecBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+            warn("[Thọ Hub Error - " .. item.Name .. "]: " .. tostring(err))
+        end
+
+        task.wait(2)
+        ExecBtn.Text = "Execute"
+        ExecBtn.BackgroundColor3 = Color3.fromRGB(0, 130, 235)
+    end)
+end
+
